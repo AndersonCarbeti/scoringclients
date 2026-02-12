@@ -7,9 +7,6 @@ from pathlib import Path
 from typing import List, Optional
 
 import pandas as pd
-import mlflow
-from mlflow.pyfunc import PyFuncModel
-import mlflow.sklearn
 import joblib
 
 from .config import get_settings
@@ -20,9 +17,12 @@ class LoadedModel:
     source: str
     input_columns: Optional[List[str]]
 
-def _infer_input_columns(pyfunc_model: PyFuncModel) -> Optional[List[str]]:
+def _infer_input_columns(model: object) -> Optional[List[str]]:
     try:
-        schema = pyfunc_model.metadata.get_input_schema()
+        metadata = getattr(model, "metadata", None)
+        if metadata is None:
+            return None
+        schema = metadata.get_input_schema()
         if schema is None:
             return None
         return [c.name for c in schema.inputs]  # type: ignore[attr-defined]
@@ -50,6 +50,9 @@ def _load_input_columns(path_str: Optional[str]) -> Optional[List[str]]:
     return None
 
 def _load_mlflow_model(uri: str) -> object:
+    import mlflow
+    import mlflow.sklearn
+
     # Prefer native sklearn flavor. In this project, pyfunc may wrap a model
     # configured with predict_fn=predict, which can break probability serving.
     try:
@@ -64,7 +67,7 @@ def load_model() -> LoadedModel:
     if s.model_uri:
         model = _load_mlflow_model(s.model_uri)
         cols = _load_input_columns(s.input_columns_path)
-        if cols is None and isinstance(model, PyFuncModel):
+        if cols is None:
             cols = _infer_input_columns(model)
         return LoadedModel(model=model, source=f"mlflow_uri:{s.model_uri}", input_columns=cols)
 
@@ -77,7 +80,7 @@ def load_model() -> LoadedModel:
 
         model = _load_mlflow_model(s.local_model_path)
         cols = _load_input_columns(s.input_columns_path)
-        if cols is None and isinstance(model, PyFuncModel):
+        if cols is None:
             cols = _infer_input_columns(model)
         return LoadedModel(model=model, source=f"local_path:{s.local_model_path}", input_columns=cols)
 
