@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/mlruns/445824371887645798/259b8f96c0b14e42b377d6a5230af8d6/artifacts
+end_time: 1769871784066
+entry_point_name: ''
+experiment_id: '445824371887645798'
+lifecycle_stage: active
+run_id: 259b8f96c0b14e42b377d6a5230af8d6
+run_name: LightGBM-RandomizedSearch
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769871734424
+status: 3
+tags: []
+user_id: andersoncarbeti

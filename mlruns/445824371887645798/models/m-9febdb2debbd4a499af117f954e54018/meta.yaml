@@ -1,0 +1,10 @@
+artifact_location: file:///Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/mlruns/445824371887645798/models/m-9febdb2debbd4a499af117f954e54018/artifacts
+creation_timestamp: 1769871637705
+experiment_id: '445824371887645798'
+last_updated_timestamp: 1769871640740
+model_id: m-9febdb2debbd4a499af117f954e54018
+model_type: null
+name: model
+source_run_id: e905717e7a064c71adf6ce53e9086584
+status: 2
+status_message: null

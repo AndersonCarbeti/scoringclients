@@ -1,0 +1,23 @@
+artifact_path: file:///Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/mlruns/445824371887645798/models/m-b0a87e917df942eaab9ce847779fd760/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.0
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.9.0
+model_id: m-b0a87e917df942eaab9ce847779fd760
+model_size_bytes: 106026
+model_uuid: m-b0a87e917df942eaab9ce847779fd760
+prompts: null
+run_id: 72afa8d3e0594789a241ea3c62bb73da
+utc_time_created: '2026-01-31 15:01:12.916466'

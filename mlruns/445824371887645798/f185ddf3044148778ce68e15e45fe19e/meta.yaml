@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/mlruns/445824371887645798/f185ddf3044148778ce68e15e45fe19e/artifacts
+end_time: 1769871734272
+entry_point_name: ''
+experiment_id: '445824371887645798'
+lifecycle_stage: active
+run_id: f185ddf3044148778ce68e15e45fe19e
+run_name: LightGBM
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769871730355
+status: 3
+tags: []
+user_id: andersoncarbeti

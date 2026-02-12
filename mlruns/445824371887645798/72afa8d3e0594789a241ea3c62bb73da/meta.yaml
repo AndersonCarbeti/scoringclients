@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/mlruns/445824371887645798/72afa8d3e0594789a241ea3c62bb73da/artifacts
+end_time: 1769871676138
+entry_point_name: ''
+experiment_id: '445824371887645798'
+lifecycle_stage: active
+run_id: 72afa8d3e0594789a241ea3c62bb73da
+run_name: XGBoost
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769871672861
+status: 3
+tags: []
+user_id: andersoncarbeti

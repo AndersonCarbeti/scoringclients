@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: scoringclients-api
+    env: docker
+    plan: free
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: THRESHOLD
+        value: "0.402"
+      - key: INPUT_COLUMNS_PATH
+        value: data/input_columns.json
+      - key: CLIENTS_CSV_PATH
+        value: data/clients_sample.csv

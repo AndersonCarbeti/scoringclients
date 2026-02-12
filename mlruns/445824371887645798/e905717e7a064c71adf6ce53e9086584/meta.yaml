@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/mlruns/445824371887645798/e905717e7a064c71adf6ce53e9086584/artifacts
+end_time: 1769871640743
+entry_point_name: ''
+experiment_id: '445824371887645798'
+lifecycle_stage: active
+run_id: e905717e7a064c71adf6ce53e9086584
+run_name: LogisticRegression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769871637684
+status: 3
+tags: []
+user_id: andersoncarbeti

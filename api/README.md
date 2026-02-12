@@ -110,3 +110,22 @@ Option B (modele local .joblib, sans MLflow) :
 RUN_INTEGRATION=1 python -m pytest -q -m integration
 ```
 Note: l’integration .joblib necessite `lightgbm` si le pipeline l’utilise.
+
+## 7) Deploiement (Render / Railway)
+
+Les fichiers de deploiement sont inclus :
+- `render.yaml` (racine du repo)
+- `railway.json` (racine du repo)
+- `api/Dockerfile`
+
+### Render
+1. Connecter le repo GitHub a Render.
+2. Render detecte `render.yaml` automatiquement.
+3. Lancer le deploy puis verifier : `https://<votre-service>.onrender.com/health`
+
+### Railway
+1. Connecter le repo GitHub a Railway.
+2. Railway utilisera `railway.json` et `api/Dockerfile`.
+3. Verifier : `https://<votre-service>.up.railway.app/health`
+
+> Note: l URL finale depend de votre compte/projet Render ou Railway.
