@@ -23,4 +23,6 @@ services:
     healthCheckPath: /
     envVars:
       - key: DASHBOARD_API_URL
-        value: https://scoringclients-api.onrender.com
+        value: https://scoringclients-api-y328.onrender.com
+      - key: DASHBOARD_CLIENTS_CSV
+        value: /app/data/samples/echantillon_clients.csv

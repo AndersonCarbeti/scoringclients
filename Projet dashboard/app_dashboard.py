@@ -22,7 +22,6 @@ logging.basicConfig(level=logging.INFO)
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 URL_API_PAR_DEFAUT = os.getenv("DASHBOARD_API_URL", "http://localhost:8000")
-CSV_CLIENTS_PAR_DEFAUT = ROOT_DIR / "data" / "samples" / "echantillon_clients.csv"
 COLONNE_ID_CLIENT = "SK_ID_CURR"
 
 COULEUR_ACCEPTE = "#1b5e20"
@@ -51,6 +50,26 @@ MOTS_SENSIBLES = [
 ]
 
 
+def _premier_chemin_existant(candidats: list[Path]) -> Path | None:
+    for chemin in candidats:
+        if chemin.exists():
+            return chemin
+    return None
+
+
+def chemin_clients_par_defaut() -> Path:
+    chemins_candidats = [
+        Path(os.getenv("DASHBOARD_CLIENTS_CSV", "")),
+        ROOT_DIR / "data" / "samples" / "echantillon_clients.csv",
+        ROOT_DIR / "api" / "data" / "clients_sample.csv",
+        Path("/app/data/samples/echantillon_clients.csv"),
+        Path("/app/api/data/clients_sample.csv"),
+    ]
+    chemins_candidats = [c for c in chemins_candidats if str(c)]
+    trouve = _premier_chemin_existant(chemins_candidats)
+    return trouve if trouve is not None else ROOT_DIR / "data" / "samples" / "echantillon_clients.csv"
+
+
 def _appeler_api_get(url: str, timeout: int = 20) -> dict[str, Any]:
     try:
         reponse = requests.get(url, timeout=timeout)
@@ -73,7 +92,20 @@ def _appeler_api_post(url: str, payload: dict[str, Any], timeout: int = 20) -> d
 
 @st.cache_data(show_spinner=False)
 def charger_clients(chemin_csv: str) -> pd.DataFrame:
-    return pd.read_csv(chemin_csv)
+    chemin_saisi = Path(chemin_csv)
+    candidats = [
+        chemin_saisi,
+        ROOT_DIR / chemin_saisi,
+        ROOT_DIR / "data" / "samples" / "echantillon_clients.csv",
+        ROOT_DIR / "api" / "data" / "clients_sample.csv",
+        Path("/app/data/samples/echantillon_clients.csv"),
+        Path("/app/api/data/clients_sample.csv"),
+    ]
+    for chemin in candidats:
+        if chemin.exists():
+            return pd.read_csv(chemin)
+    chemins_testes = "\n".join(f"- {c}" for c in candidats)
+    raise FileNotFoundError(f"Fichier clients introuvable. Chemins testes:\n{chemins_testes}")
 
 
 @st.cache_data(show_spinner=False)
@@ -516,15 +548,17 @@ def main() -> None:
 
         st.header("Configuration")
         url_api = st.text_input("URL API", value=URL_API_PAR_DEFAUT)
-        chemin_csv = st.text_input("Chemin du fichier clients", value=str(CSV_CLIENTS_PAR_DEFAUT))
+        chemin_csv = st.text_input("Chemin du fichier clients", value=str(chemin_clients_par_defaut()))
         zone_grise = st.slider("Largeur zone grise", min_value=0.0, max_value=0.10, value=0.03, step=0.005)
         top_k_categories = st.slider("Nombre max de categories affichees", min_value=5, max_value=30, value=12, step=1)
 
     try:
         with st.spinner("Chargement des donnees clients..."):
             df_clients = charger_clients(chemin_csv)
-    except Exception:
+    except Exception as exc:
         st.error("Impossible de lire le fichier clients. Verifiez le chemin puis reessayez.")
+        with st.expander("Detail technique"):
+            st.text(str(exc))
         return
 
     if COLONNE_ID_CLIENT not in df_clients.columns:
