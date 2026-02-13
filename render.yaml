@@ -23,5 +23,7 @@ services:
     startCommand: streamlit run "Projet dashboard/app_dashboard.py" --server.port=$PORT --server.address=0.0.0.0
     healthCheckPath: /
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
       - key: DASHBOARD_API_URL
         value: https://scoringclients-api.onrender.com
