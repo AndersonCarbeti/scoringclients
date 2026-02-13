@@ -16,14 +16,11 @@ services:
 
   - type: web
     name: scoringclients-dashboard
-    env: python
+    env: docker
     plan: free
-    rootDir: .
-    buildCommand: pip install -r "Projet dashboard/requirements.txt"
-    startCommand: streamlit run "Projet dashboard/app_dashboard.py" --server.port=$PORT --server.address=0.0.0.0
+    dockerfilePath: ./Projet dashboard/Dockerfile
+    dockerContext: .
     healthCheckPath: /
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.12.8
       - key: DASHBOARD_API_URL
         value: https://scoringclients-api.onrender.com
