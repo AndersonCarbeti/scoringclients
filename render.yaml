@@ -18,7 +18,7 @@ services:
     name: scoringclients-dashboard
     env: docker
     plan: free
-    dockerfilePath: ./Projet dashboard/Dockerfile
+    dockerfilePath: ./dashboard.Dockerfile
     dockerContext: .
     healthCheckPath: /
     envVars:
