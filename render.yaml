@@ -15,14 +15,14 @@ services:
         value: data/clients_sample.csv
 
   - type: web
-    name: scoringclients-dashboard
+    name: scoringclients-streamlit
     env: docker
     plan: free
-    dockerfilePath: ./dashboard.Dockerfile
+    dockerfilePath: ./streamlit.Dockerfile
     dockerContext: .
     healthCheckPath: /
     envVars:
-      - key: DASHBOARD_API_URL
-        value: https://scoringclients-api-y328.onrender.com
-      - key: DASHBOARD_CLIENTS_CSV
-        value: /app/data/samples/echantillon_clients.csv
+      - key: STREAMLIT_API_BASE_URL
+        value: https://scoringclients.onrender.com
+      - key: STREAMLIT_CLIENTS_CSV
+        value: /app/api/data/clients_sample.csv

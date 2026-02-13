@@ -1,13 +1,16 @@
 import json
+import os
 from pathlib import Path
 
 import requests
 import streamlit as st
 import pandas as pd
 
-BASE_URL_DEFAULT = "http://localhost:8000"
+BASE_URL_DEFAULT = os.getenv("STREAMLIT_API_BASE_URL", "http://localhost:8000")
 DATA_DIR = Path(__file__).resolve().parent
-CLIENTS_CSV_DEFAULT = DATA_DIR.parent / "data" / "samples" / "echantillon_clients.csv"
+CLIENTS_CSV_DEFAULT = Path(
+    os.getenv("STREAMLIT_CLIENTS_CSV", str(DATA_DIR / "data" / "clients_sample.csv"))
+)
 
 st.set_page_config(page_title="Pret a depenser — API Test", layout="centered")
 
