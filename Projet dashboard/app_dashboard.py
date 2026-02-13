@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from pathlib import Path
 from typing import Any
 
@@ -20,7 +21,7 @@ LOGGER = logging.getLogger("dashboard_scoring")
 logging.basicConfig(level=logging.INFO)
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-URL_API_PAR_DEFAUT = "http://localhost:8000"
+URL_API_PAR_DEFAUT = os.getenv("DASHBOARD_API_URL", "http://localhost:8000")
 CSV_CLIENTS_PAR_DEFAUT = ROOT_DIR / "data" / "samples" / "echantillon_clients.csv"
 COLONNE_ID_CLIENT = "SK_ID_CURR"
 
@@ -281,7 +282,7 @@ def afficher_ecarts_non_causaux(df_groupe: pd.DataFrame, ligne_client: pd.Series
     st.bar_chart(df_ecarts.set_index("Variable")["Ecart normalise"])
     st.dataframe(df_ecarts, use_container_width=True, hide_index=True)
 
-    st.warning("Disclaimer non causal: ces ecarts ne prouvent pas une relation cause-effet.")
+    st.warning("Avertissement non causal: ces ecarts ne prouvent pas une relation cause-effet.")
 
 
 def afficher_profil_client(ligne_client: pd.Series, colonnes_affichees: list[str]) -> None:
@@ -345,7 +346,7 @@ def afficher_comparaison_univariee(df_groupe: pd.DataFrame, ligne_client: pd.Ser
                 x="Categorie",
                 y="Nombre",
                 labels={"Categorie": variable, "Nombre": "Nombre de clients"},
-                title=f"Repartition de {variable} (top {top_k_categories})",
+                title=f"Repartition de {variable} (principales categories: {top_k_categories})",
             )
             fig.update_layout(height=360, margin=dict(l=10, r=10, t=45, b=10))
             st.plotly_chart(fig, use_container_width=True)
@@ -398,7 +399,7 @@ def afficher_bivariee(df_groupe: pd.DataFrame, ligne_client: pd.Series, x_col: s
         st.scatter_chart(echantillon, x=x_col, y=y_col)
 
 
-def afficher_what_if(
+def afficher_simulation_scenario(
     url_api: str,
     ligne_client: pd.Series,
     colonnes_modele: list[str],
@@ -406,7 +407,7 @@ def afficher_what_if(
     proba_avant: float,
     decision_avant_api: str,
 ) -> None:
-    st.subheader("Simulation what-if")
+    st.subheader("Simulation de scenario")
     st.caption("Seules les variables actionnables et non sensibles sont modifiables.")
 
     features_initiales = extraire_features_ligne(ligne_client, colonnes_modele)
@@ -460,7 +461,7 @@ def afficher_what_if(
         try:
             pred_apres = scorer_par_features(url_api, valeurs_modifiees)
         except Exception:
-            st.error("Le recalcul what-if a echoue. Verifiez les valeurs saisies puis reessayez.")
+            st.error("Le recalcul de simulation a echoue. Verifiez les valeurs saisies puis reessayez.")
             return
 
         proba_apres = float(pred_apres["proba_default"])
@@ -493,7 +494,7 @@ def afficher_what_if(
 
 
 def initialiser_application() -> None:
-    st.set_page_config(page_title="Dashboard scoring credit", layout="wide")
+    st.set_page_config(page_title="Dashboard de scoring credit", layout="wide")
     st.title("Pret a depenser - Dashboard de credit scoring")
     st.caption("Presentation du score client pour un public non technique")
 
@@ -508,7 +509,7 @@ def main() -> None:
             options=[
                 "Synthese decision",
                 "Comparaison client",
-                "Simulation what-if",
+                "Simulation de scenario",
                 "Parametres",
             ],
         )
@@ -602,9 +603,9 @@ def main() -> None:
 
         afficher_ecarts_non_causaux(groupe, ligne_client)
 
-    elif section == "Simulation what-if":
+    elif section == "Simulation de scenario":
         afficher_resume_decision(proba, seuil, decision_api, zone_grise)
-        afficher_what_if(
+        afficher_simulation_scenario(
             url_api=url_api,
             ligne_client=ligne_client,
             colonnes_modele=colonnes_modele,

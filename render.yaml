@@ -13,3 +13,15 @@ services:
         value: data/input_columns.json
       - key: CLIENTS_CSV_PATH
         value: data/clients_sample.csv
+
+  - type: web
+    name: scoringclients-dashboard
+    env: python
+    plan: free
+    rootDir: .
+    buildCommand: pip install -r "Projet dashboard/requirements.txt"
+    startCommand: streamlit run "Projet dashboard/app_dashboard.py" --server.port=$PORT --server.address=0.0.0.0
+    healthCheckPath: /
+    envVars:
+      - key: DASHBOARD_API_URL
+        value: https://scoringclients-api.onrender.com
