@@ -1,123 +1,29 @@
-Parfait. Voici une version complète prête à copier-coller dans un README.md pour ton projet Projet 7 — Prêt à dépenser. Elle inclut local + cloud + Streamlit + MLflow + Data Drift, bien structurée pour la soutenance :
+# Projet 7 — Prêt à dépenser (Credit Scoring)
 
-# Projet 7 — Prêt à dépenser (scoring credit)
-
-Ce dépôt contient l’ensemble des livrables pour la soutenance : notebooks, API, artefacts modèle, MLflow, CI/CD, Streamlit, Data Drift Evidently.
+Ce dépôt regroupe l’ensemble des livrables pour la soutenance : notebooks, API, artefacts modèle, MLflow, CI/CD, Streamlit et rapports Data Drift Evidently.
 
 ---
 
-## Structure
+## Structure du projet
 
-- `notebooks/` : notebooks de modélisation + tests API  
-- `data/raw/` : datasets originaux  
-- `data/processed/` : datasets préparés  
+- `notebooks/` : notebooks de modélisation et tests API  
+- `data/raw/` : jeux de données originaux  
+- `data/processed/` : jeux de données préparés  
 - `data/samples/` : échantillons clients pour l’API  
-- `artifacts/` : modèle champion + threshold/input columns  
+- `artifacts/` : modèle champion + seuil métier + colonnes d’entrée  
 - `mlruns/` : tracking MLflow local  
-- `outputs/` : rapports SHAP / Evidently + exports  
+- `outputs/` : rapports SHAP, Evidently et exports  
 - `api/` : service FastAPI + tests + Streamlit  
 - `.github/workflows/` : CI/CD  
 - `slides/` : supports de présentation  
 
 ---
 
-## API Locale Live
+## API Locale
 
-1. **Préparer l'environnement**
+### 1. Préparer l'environnement
 ```bash
 cd /Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/api
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements-dev.txt
-
-	2.	Lancer les tests unitaires
-
-pytest -q
-
-	3.	Lancer l’API
-
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-
-	4.	Tester les endpoints
-
-curl -s http://localhost:8000/health
-curl -s http://localhost:8000/model-info
-curl -s http://localhost:8000/predict -H "Content-Type: application/json" -d @/Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/api/data/sample_predict.json
-curl -s http://localhost:8000/predict-batch -H "Content-Type: application/json" -d @/Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/api/data/sample_batch.json
-curl -s http://localhost:8000/predict-by-id/100001
-
-	5.	Lancer Streamlit local
-
-cd /Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/api
-source .venv/bin/activate
-streamlit run streamlit_app.py
-
-	•	URL attendue : http://localhost:8501
-	•	Base URL Streamlit : http://localhost:8000
-	•	CSV clients : /Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/data/samples/echantillon_clients.csv
-
-⸻
-
-Tests API Cloud (Render)
-	1.	Vérifier le service et le modèle
-
-curl -s https://scoringclients.onrender.com/health
-curl -s https://scoringclients.onrender.com/model-info
-
-	2.	Tester une prédiction simple
-
-curl -s https://scoringclients.onrender.com/predict -H "Content-Type: application/json" -d @/Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/api/data/sample_predict.json
-
-	3.	Tester une prédiction batch
-
-curl -s https://scoringclients.onrender.com/predict-batch -H "Content-Type: application/json" -d @/Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/api/data/sample_batch.json
-
-	4.	Tester une prédiction par ID
-
-curl -s https://scoringclients.onrender.com/predict-by-id/100001
-
-	•	URL API : https://scoringclients.onrender.com
-
-⸻
-
-CI/CD
-	•	Workflow CI : .github/workflows/ci.yml
-	•	Actions GitHub : https://github.com/AndersonCarbeti/scoringclients/actions
-
-⸻
-
-MLflow UI (local)
-
-cd /Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/scoringclients
-mlflow ui --backend-store-uri ./mlruns --host 127.0.0.1 --port 5000
-
-	•	URL : http://127.0.0.1:5000
-	•	Montre toutes les expériences + modèle champion
-
-⸻
-
-Data Drift Evidently
-	•	Rapport HTML : outputs/reports/evidently/data_drift_train_vs_dataframe_test.html
-	•	Indique la stabilité des features entre train et test
-	•	Interprétation rapide :
-	•	Dataset Drift is NOT detected
-	•	Dataset drift detection threshold: 0.5
-	•	Nombre de colonnes : 236
-	•	Colonnes drifted : 18 (0.0763 share)
-
-⸻
-
-Démo courte soutenance
-	1.	Montrer que l’API fonctionne localement (endpoints + tests)
-	2.	Montrer CI/CD et workflow GitHub
-	3.	Montrer API cloud Render
-	4.	Montrer MLflow UI et rapport Evidently
-	5.	Montrer Streamlit pour le scoring client
-
-⸻
-
-Notes
-	•	Seuil métier : 0.402
-	•	Score FN/FP documenté
-	•	Endpoints clés : /predict, /predict-batch, /predict-by-id/{client_id}
-	•	JSON exemples : sample_predict.json et sample_batch.json
