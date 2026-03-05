@@ -24,7 +24,8 @@ Ce dépôt regroupe l’ensemble des livrables pour la soutenance : notebooks, A
 ```bash
 # 1. Aller dans le dossier API
 cd /Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/api
-
+```
+```bash
 # 2. Créer et activer l'environnement virtuel
 python3 -m venv .venv
 source .venv/bin/activate
