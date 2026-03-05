@@ -1,0 +1,15 @@
+creation_timestamp: 1769871784326
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1769871784326
+model_id: m-b0a87e917df942eaab9ce847779fd760
+name: home_credit_default_model
+run_id: 72afa8d3e0594789a241ea3c62bb73da
+run_link: null
+source: models:/m-b0a87e917df942eaab9ce847779fd760
+status: READY
+status_message: null
+storage_location: file:///Users/andersoncarbeti/Projet_7_final/Projet_7_final_final/mlruns/445824371887645798/models/m-b0a87e917df942eaab9ce847779fd760/artifacts
+user_id: null
+version: 2
